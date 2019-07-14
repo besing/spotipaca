@@ -1,71 +1,36 @@
 import React from 'react';
 
 import './App.css';
-import {
-  getFreshAuthToken,
-  setAuthTokenForRequests,
-  spotifyApi
-} from './authentication';
+import { spotifyApi, authenticate } from './authentication';
 import SingleAlbum from './SingleAlbum';
 import AlbumsWrapper from './AlbumsWrapper';
+import store from './store';
 
 class App extends React.Component<
-  {},
-  { loggedIn: boolean; userAlbums: any[]; deletedAlbumIds: string[] }
+  { fetchAlbums?; userAlbums?; checkAuthTokenValidity; userIsLoggedIn },
+  { deletedAlbumIds: string[] }
 > {
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
-      loggedIn: false,
-      userAlbums: undefined,
       deletedAlbumIds: []
     };
   }
 
   componentDidMount() {
-    this.checkTokenValidity();
+    this.props.checkAuthTokenValidity();
   }
 
   componentDidUpdate() {
-    const { loggedIn, userAlbums } = this.state;
+    const { fetchAlbums, userIsLoggedIn, userAlbums } = this.props;
 
-    if (loggedIn && !userAlbums) {
-      this.fetchAlbums();
+    if (userIsLoggedIn && !userAlbums) {
+      fetchAlbums();
     }
   }
 
-  authenticate = () => {
-    getFreshAuthToken();
-    setAuthTokenForRequests();
-  };
-
-  checkTokenValidity = () => {
-    // After 3600ms tokens get invalidated
-    // Test call to check if we're (still) successfully authenticated
-    setAuthTokenForRequests();
-
-    spotifyApi.getMySavedAlbums({ limit: 1 }).then(
-      res => this.setState({ loggedIn: true }),
-      err => {
-        this.setState({ loggedIn: false });
-        console.error('no valid token ', err);
-      }
-    );
-  };
-
-  fetchAlbums = () => {
-    spotifyApi
-      .getMySavedAlbums({ limit: 2 })
-      .then(
-        res => this.setState({ userAlbums: res.items }),
-        err => console.error(err)
-      );
-  };
-
   deleteAlbum = albumId => {
-    const { userAlbums } = this.state;
-
     spotifyApi.removeFromMySavedAlbums([albumId]).then(
       res => {
         this.setState(prevState => ({
@@ -80,18 +45,20 @@ class App extends React.Component<
 
   render() {
     console.log('STATE: ', this.state);
-    const { userAlbums } = this.state;
+    const { fetchAlbums, userAlbums, userIsLoggedIn } = this.props;
+    console.log('store.getState()', store.getState());
+    console.log('this.props', this.props);
 
     return (
       <div className="App">
-        {!this.state.loggedIn ? (
+        {!userIsLoggedIn ? (
           <div>
             <h5>Please login and grant Spotify access to continue</h5>
-            <button onClick={() => this.authenticate()}>Login</button>
+            <button onClick={() => authenticate()}>Login</button>
           </div>
         ) : (
           <div>
-            <button onClick={this.fetchAlbums}>Fetch Albums</button>
+            <button onClick={() => fetchAlbums()}>Fetch Albums</button>
           </div>
         )}
         {userAlbums && (

@@ -41,3 +41,8 @@ export const setAuthTokenForRequests = () => {
     console.error('There was a problem while parsing your Auth Token');
   }
 };
+
+export const authenticate = () => {
+  getFreshAuthToken();
+  setAuthTokenForRequests();
+};
