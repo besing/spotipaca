@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "jsRules": {},
+  "rules": {
+    "no-console": {
+      "severity": "warning"
+    },
+    "no-unused-variables": {
+      "severity": "warning"
+    },
+    "no-unused-expressions": {
+      "severity": "warning"
+    }
+  },
+  "rulesDirectory": []
+}
