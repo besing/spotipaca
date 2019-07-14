@@ -1,4 +1,4 @@
-import { setAuthTokenForRequests, spotifyApi } from '../authentication';
+import { setAuthTokenForRequests, spotifyApi } from '../utils/authentication';
 
 export const ACTIONS = {
   SET_LOGGED_IN_STATE: 'SET_LOGGED_IN_STATE',

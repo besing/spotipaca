@@ -1,13 +1,12 @@
 import React from 'react';
 
-import './App.css';
-import { spotifyApi, authenticate } from './authentication';
+import { spotifyApi, authenticate } from '../utils/authentication';
 import SingleAlbum from './SingleAlbum';
 import AlbumsWrapper from './AlbumsWrapper';
-import store from './store';
+import store from '../store';
 
 class App extends React.Component<
-  { fetchAlbums?; userAlbums?; checkAuthTokenValidity; userIsLoggedIn },
+  { fetchAlbums?; userAlbums?; checkAuthTokenValidity?; userIsLoggedIn? },
   { deletedAlbumIds: string[] }
 > {
   constructor(props: any) {

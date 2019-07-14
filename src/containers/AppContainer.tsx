@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import { fetchAlbums, checkAuthTokenValidity } from './actions';
-import App from './App';
+import { fetchAlbums, checkAuthTokenValidity } from '../actions';
+import App from '../components/App';
 
 const mapStateToProps = state => ({
   userAlbums: state.userAlbums,
