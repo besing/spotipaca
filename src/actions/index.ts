@@ -2,7 +2,8 @@ import { setAuthTokenForRequests, spotifyApi } from '../utils/authentication';
 
 export const ACTIONS = {
   SET_LOGGED_IN_STATE: 'SET_LOGGED_IN_STATE',
-  SAVE_ALBUMS_TO_STATE: 'SAVE_ALBUMS_TO_STATE'
+  SAVE_ALBUMS_TO_STATE: 'SAVE_ALBUMS_TO_STATE',
+  MARK_ALBUM_FOR_DELETION: 'MARK_ALBUM_FOR_DELETION'
 };
 
 const setLoggedInState = (loggedInState: boolean) => ({
@@ -13,6 +14,11 @@ const setLoggedInState = (loggedInState: boolean) => ({
 const saveAlbumsToState = albumsResponse => ({
   type: ACTIONS.SAVE_ALBUMS_TO_STATE,
   albumsResponse
+});
+
+export const markAlbumForDeletion = albumId => ({
+  type: ACTIONS.MARK_ALBUM_FOR_DELETION,
+  albumId
 });
 
 /**
@@ -32,7 +38,7 @@ export const checkAuthTokenValidity = () => dispatch => {
 };
 
 export const fetchAlbums = () => dispatch =>
-  spotifyApi.getMySavedAlbums({ limit: 2 }).then(
+  spotifyApi.getMySavedAlbums({ limit: 10 }).then(
     res => dispatch(saveAlbumsToState(res)),
     err => {
       console.error(err);

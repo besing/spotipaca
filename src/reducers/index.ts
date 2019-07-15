@@ -21,4 +21,18 @@ const authentication = (state = {}, action) => {
   }
 };
 
-export default combineReducers({ authentication, userAlbums });
+const albumsMarkedForDeletion = (state = [], action) => {
+  switch (action.type) {
+    case ACTIONS.MARK_ALBUM_FOR_DELETION: {
+      return [...state, action.albumId];
+    }
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({
+  authentication,
+  userAlbums,
+  albumsMarkedForDeletion
+});

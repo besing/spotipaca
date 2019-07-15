@@ -1,22 +1,16 @@
 import React from 'react';
 
 import { spotifyApi, authenticate } from '../utils/authentication';
-import SingleAlbum from './SingleAlbum';
 import AlbumsWrapper from './AlbumsWrapper';
 import store from '../store';
+import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 
-class App extends React.Component<
-  { fetchAlbums?; userAlbums?; checkAuthTokenValidity?; userIsLoggedIn? },
-  { deletedAlbumIds: string[] }
-> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      deletedAlbumIds: []
-    };
-  }
-
+class App extends React.Component<{
+  fetchAlbums?;
+  userAlbums?;
+  checkAuthTokenValidity?;
+  userIsLoggedIn?;
+}> {
   componentDidMount() {
     this.props.checkAuthTokenValidity();
   }
@@ -24,23 +18,23 @@ class App extends React.Component<
   componentDidUpdate() {
     const { fetchAlbums, userIsLoggedIn, userAlbums } = this.props;
 
-    if (userIsLoggedIn && !userAlbums) {
+    if (userIsLoggedIn && !userAlbums.length) {
       fetchAlbums();
     }
   }
 
-  deleteAlbum = albumId => {
-    spotifyApi.removeFromMySavedAlbums([albumId]).then(
-      res => {
-        this.setState(prevState => ({
-          deletedAlbumIds: [...prevState.deletedAlbumIds, albumId]
-        }));
+  // deleteAlbum = albumId => {
+  //   spotifyApi.removeFromMySavedAlbums([albumId]).then(
+  //     res => {
+  //       this.setState(prevState => ({
+  //         deletedAlbumIds: [...prevState.deletedAlbumIds, albumId]
+  //       }));
 
-        console.log('successfully deleted! id: ', albumId);
-      },
-      err => console.error(err)
-    );
-  };
+  //       console.log('successfully deleted! id: ', albumId);
+  //     },
+  //     err => console.error(err)
+  //   );
+  // };
 
   render() {
     console.log('STATE: ', this.state);
@@ -63,13 +57,7 @@ class App extends React.Component<
         {userAlbums && (
           <AlbumsWrapper>
             {userAlbums.map((album: any) => (
-              <SingleAlbum
-                key={album.album.id}
-                onDeleteClick={() => this.deleteAlbum(album.album.id)}
-                albumDeleted={this.state.deletedAlbumIds.includes(
-                  album.album.id
-                )}
-              >
+              <SingleAlbumContainer key={album.album.id} id={album.album.id}>
                 <img
                   src={album.album.images[1].url}
                   width="300"
@@ -79,7 +67,7 @@ class App extends React.Component<
                 <figcaption>{`${album.album.artists[0].name}: ${
                   album.album.name
                 }`}</figcaption>
-              </SingleAlbum>
+              </SingleAlbumContainer>
             ))}
           </AlbumsWrapper>
         )}
