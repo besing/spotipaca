@@ -24,6 +24,9 @@ const authentication = (state = {}, action) => {
 const albumsMarkedForDeletion = (state = [], action) => {
   switch (action.type) {
     case ACTIONS.MARK_ALBUM_FOR_DELETION: {
+      if (state.includes(action.albumId)) {
+        return state.filter(album => album !== action.albumId);
+      }
       return [...state, action.albumId];
     }
     default:
