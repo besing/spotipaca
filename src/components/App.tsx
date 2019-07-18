@@ -2,8 +2,8 @@ import React from 'react';
 
 import { authenticate } from '../utils/authentication';
 import AlbumsWrapper from './AlbumsWrapper';
-import store from '../store';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
+import Spinner from './Spinner';
 
 class App extends React.Component<{
   fetchAlbums?;
@@ -12,15 +12,35 @@ class App extends React.Component<{
   checkAuthTokenValidity?;
   userIsLoggedIn?;
 }> {
+  intersectionTargetRef: any;
+  intersectionObserver: IntersectionObserver;
+
+  constructor(props) {
+    super(props);
+
+    this.intersectionTargetRef = React.createRef();
+  }
+
   componentDidMount() {
     this.props.checkAuthTokenValidity();
+
+    this.intersectionObserver = new IntersectionObserver(
+      () => {
+        this.props.fetchAlbums(25, this.props.userAlbums.length);
+      },
+      { threshold: 0.5 }
+    );
   }
 
   componentDidUpdate() {
     const { fetchAlbums, userIsLoggedIn, userAlbums } = this.props;
+    const currentIntersectionElement = this.intersectionTargetRef.current;
 
-    if (userIsLoggedIn && !userAlbums.length) {
-      fetchAlbums(10, 0);
+    if (userIsLoggedIn) {
+      !userAlbums.length && fetchAlbums(25, 0);
+
+      currentIntersectionElement &&
+        this.intersectionObserver.observe(currentIntersectionElement);
     }
   }
 
@@ -32,8 +52,6 @@ class App extends React.Component<{
       userAlbumsCount,
       userIsLoggedIn
     } = this.props;
-    console.log('store.getState()', store.getState());
-    console.log('this.props', this.props);
 
     return (
       <div className="App">
@@ -69,9 +87,12 @@ class App extends React.Component<{
               ))}
             </AlbumsWrapper>
             {userAlbums.length < userAlbumsCount && (
-              <button onClick={() => fetchAlbums(50, userAlbums.length)}>
-                Fetch more albums
-              </button>
+              <Spinner
+                ref={this.intersectionTargetRef}
+                id="loadingSpinnerPageBottom"
+              >
+                Loading...
+              </Spinner>
             )}
           </>
         )}
