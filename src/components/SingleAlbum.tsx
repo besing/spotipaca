@@ -13,14 +13,19 @@ const AlbumDeleteButton = ({ markAlbumForDeletion, id }) => (
   </StyledAlbumDeleteButton>
 );
 
+const StyledAlbumPlaceholder = styled.div`
+  width: 18vw;
+  height: 18vw;
+  margin: 0 3px 3px 0;
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+`;
+
 const StyledSingleAlbum = styled.figure<{
   markedForDeletion: boolean;
 }>`
-  width: calc(20% - 3px);
-  height: calc(20% - 3px);
-  margin: 0 3px 3px 0;
+  margin: 0;
   font-size: 12px;
-  position: relative;
 
   opacity: ${props => (props.markedForDeletion ? '0.2' : 1)};
   transition: opacity 0.2s ease-in-out;
@@ -47,10 +52,17 @@ const SingleAlbum = ({
   children
 }) => {
   return (
-    <StyledSingleAlbum markedForDeletion={albumsMarkedForDeletion.includes(id)}>
-      <AlbumDeleteButton markAlbumForDeletion={markAlbumForDeletion} id={id} />
-      {children}
-    </StyledSingleAlbum>
+    <StyledAlbumPlaceholder>
+      <StyledSingleAlbum
+        markedForDeletion={albumsMarkedForDeletion.includes(id)}
+      >
+        <AlbumDeleteButton
+          markAlbumForDeletion={markAlbumForDeletion}
+          id={id}
+        />
+        {children}
+      </StyledSingleAlbum>
+    </StyledAlbumPlaceholder>
   );
 };
 
