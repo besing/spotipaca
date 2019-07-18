@@ -37,9 +37,12 @@ export const checkAuthTokenValidity = () => dispatch => {
   );
 };
 
-export const fetchAlbums = () => dispatch =>
-  spotifyApi.getMySavedAlbums({ limit: 10 }).then(
-    res => dispatch(saveAlbumsToState(res)),
+export const fetchAlbums = (limit: number, offset: number) => dispatch =>
+  spotifyApi.getMySavedAlbums({ limit, offset }).then(
+    res => {
+      console.log('res:', res);
+      dispatch(saveAlbumsToState(res));
+    },
     err => {
       console.error(err);
     }

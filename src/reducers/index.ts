@@ -1,6 +1,16 @@
 import { combineReducers } from 'redux';
 import { ACTIONS } from '../actions';
 
+const userAlbumsCount = (state = 0, action) => {
+  switch (action.type) {
+    case ACTIONS.SAVE_ALBUMS_TO_STATE: {
+      return action.albumsResponse.total;
+    }
+    default:
+      return state;
+  }
+};
+
 const userAlbums = (state = [], action) => {
   switch (action.type) {
     case ACTIONS.SAVE_ALBUMS_TO_STATE: {
@@ -36,6 +46,7 @@ const albumsMarkedForDeletion = (state = [], action) => {
 
 export default combineReducers({
   authentication,
+  userAlbumsCount,
   userAlbums,
   albumsMarkedForDeletion
 });
