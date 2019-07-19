@@ -1,22 +1,30 @@
 import React from 'react';
 
 import { authenticate } from '../utils/authentication';
+import { sortUserAlbums } from '../utils/userAlbums';
 import AlbumsWrapper from './AlbumsWrapper';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 import Spinner from './Spinner';
 
-class App extends React.Component<{
-  fetchAlbums?;
-  userAlbums?;
-  userAlbumsCount?;
-  checkAuthTokenValidity?;
-  userIsLoggedIn?;
-}> {
+class App extends React.Component<
+  {
+    fetchAlbums?;
+    userAlbums?;
+    userAlbumsCount?;
+    checkAuthTokenValidity?;
+    userIsLoggedIn?;
+  },
+  { albumSortOrderBy: string }
+> {
   intersectionTargetRef: any;
   intersectionObserver: IntersectionObserver;
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      albumSortOrderBy: 'added_at'
+    };
 
     this.intersectionTargetRef = React.createRef();
   }
@@ -71,20 +79,39 @@ class App extends React.Component<{
         )}
         {userAlbums && (
           <>
+            <div style={{ margin: '1em' }}>
+              <label>
+                Sort order
+                <select
+                  value={this.state.albumSortOrderBy}
+                  onChange={e =>
+                    this.setState({ albumSortOrderBy: e.target.value })
+                  }
+                >
+                  <option value="added_at">Date</option>
+                  <option value="popularity">Popularity</option>
+                </select>
+              </label>
+            </div>
             <AlbumsWrapper>
-              {userAlbums.map((album: any) => (
-                <SingleAlbumContainer key={album.album.id} id={album.album.id}>
-                  <img
-                    src={album.album.images[1].url}
-                    width="300"
-                    height="300"
-                    alt={album.album.name}
-                  />
-                  <figcaption>{`${album.album.artists[0].name}: ${
-                    album.album.name
-                  }`}</figcaption>
-                </SingleAlbumContainer>
-              ))}
+              {sortUserAlbums(userAlbums, this.state.albumSortOrderBy).map(
+                (album: any) => (
+                  <SingleAlbumContainer
+                    key={album.album.id}
+                    id={album.album.id}
+                  >
+                    <img
+                      src={album.album.images[1].url}
+                      width="300"
+                      height="300"
+                      alt={album.album.name}
+                    />
+                    <figcaption>{`(${album.album.popularity}) ${
+                      album.album.artists[0].name
+                    }: ${album.album.name}`}</figcaption>
+                  </SingleAlbumContainer>
+                )
+              )}
             </AlbumsWrapper>
             {userAlbums.length < userAlbumsCount && (
               <Spinner
