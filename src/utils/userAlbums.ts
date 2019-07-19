@@ -1,5 +1,9 @@
-export const sortUserAlbums = (userAlbums, orderBy) => {
-  return userAlbums.slice().sort((a, b) => {
+export const sortUserAlbums = (
+  userAlbums,
+  orderBy,
+  order: 'ascending' | 'descending'
+) => {
+  const sortedAlbums = userAlbums.slice().sort((a, b) => {
     if (orderBy === 'added_at') {
       const dateA = new Date(a['added_at']);
       const dateB = new Date(b['added_at']);
@@ -18,4 +22,5 @@ export const sortUserAlbums = (userAlbums, orderBy) => {
       return b.album[orderBy] - a.album[orderBy];
     }
   });
+  return order === 'ascending' ? sortedAlbums.reverse() : sortedAlbums;
 };

@@ -5,6 +5,7 @@ import { sortUserAlbums } from '../utils/userAlbums';
 import AlbumsWrapper from './AlbumsWrapper';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 import Spinner from './Spinner';
+import AlbumSortMenu from './AlbumSortMenu';
 
 class App extends React.Component<
   {
@@ -14,7 +15,7 @@ class App extends React.Component<
     checkAuthTokenValidity?;
     userIsLoggedIn?;
   },
-  { albumSortOrderBy: string }
+  { albumSortOrderBy: string; albumSortOrder }
 > {
   intersectionTargetRef: any;
   intersectionObserver: IntersectionObserver;
@@ -23,7 +24,8 @@ class App extends React.Component<
     super(props);
 
     this.state = {
-      albumSortOrderBy: 'added_at'
+      albumSortOrderBy: 'added_at',
+      albumSortOrder: 'descending'
     };
 
     this.intersectionTargetRef = React.createRef();
@@ -52,6 +54,18 @@ class App extends React.Component<
     }
   }
 
+  handleSortOrderByChange = e => {
+    this.setState({
+      albumSortOrderBy: e.target.value
+    });
+  };
+
+  handleSortOrderChange = e => {
+    this.setState({
+      albumSortOrder: e.target.value
+    });
+  };
+
   render() {
     console.log('STATE: ', this.state);
     const {
@@ -77,41 +91,32 @@ class App extends React.Component<
             </div>
           )
         )}
-        {userAlbums && (
+        {!!userAlbums.length && (
           <>
-            <div style={{ margin: '1em' }}>
-              <label>
-                Sort order
-                <select
-                  value={this.state.albumSortOrderBy}
-                  onChange={e =>
-                    this.setState({ albumSortOrderBy: e.target.value })
-                  }
-                >
-                  <option value="added_at">Date</option>
-                  <option value="popularity">Popularity</option>
-                </select>
-              </label>
-            </div>
+            <AlbumSortMenu
+              sortOrderBy={this.state.albumSortOrderBy}
+              sortOrder={this.state.albumSortOrder}
+              onOrderByChange={this.handleSortOrderByChange}
+              onSortOrderChange={this.handleSortOrderChange}
+            />
             <AlbumsWrapper>
-              {sortUserAlbums(userAlbums, this.state.albumSortOrderBy).map(
-                (album: any) => (
-                  <SingleAlbumContainer
-                    key={album.album.id}
-                    id={album.album.id}
-                  >
-                    <img
-                      src={album.album.images[1].url}
-                      width="300"
-                      height="300"
-                      alt={album.album.name}
-                    />
-                    <figcaption>{`(${album.album.popularity}) ${
-                      album.album.artists[0].name
-                    }: ${album.album.name}`}</figcaption>
-                  </SingleAlbumContainer>
-                )
-              )}
+              {sortUserAlbums(
+                userAlbums,
+                this.state.albumSortOrderBy,
+                this.state.albumSortOrder
+              ).map((album: any) => (
+                <SingleAlbumContainer key={album.album.id} id={album.album.id}>
+                  <img
+                    src={album.album.images[1].url}
+                    width="300"
+                    height="300"
+                    alt={album.album.name}
+                  />
+                  <figcaption>{`(${album.album.popularity}) ${
+                    album.album.artists[0].name
+                  }: ${album.album.name}`}</figcaption>
+                </SingleAlbumContainer>
+              ))}
             </AlbumsWrapper>
             {userAlbums.length < userAlbumsCount && (
               <Spinner
