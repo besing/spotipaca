@@ -21,6 +21,7 @@ export const sortUserAlbums = (
     if (orderBy === 'popularity') {
       return b.album[orderBy] - a.album[orderBy];
     }
+    return null;
   });
   return order === 'ascending' ? sortedAlbums.reverse() : sortedAlbums;
 };

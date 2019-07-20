@@ -14,8 +14,9 @@ class App extends React.Component<
     userAlbumsCount?;
     checkAuthTokenValidity?;
     userIsLoggedIn?;
+    isFetchingData;
   },
-  { albumSortOrderBy: string; albumSortOrder }
+  { albumSortOrderBy: string; albumSortOrder; spinnerIsVisible: boolean }
 > {
   intersectionTargetRef: any;
   intersectionObserver: IntersectionObserver;
@@ -25,7 +26,8 @@ class App extends React.Component<
 
     this.state = {
       albumSortOrderBy: 'added_at',
-      albumSortOrder: 'descending'
+      albumSortOrder: 'descending',
+      spinnerIsVisible: null
     };
 
     this.intersectionTargetRef = React.createRef();
@@ -34,23 +36,33 @@ class App extends React.Component<
   componentDidMount() {
     this.props.checkAuthTokenValidity();
 
-    this.intersectionObserver = new IntersectionObserver(
-      () => {
-        this.props.fetchAlbums(25, this.props.userAlbums.length);
-      },
-      { threshold: 0.5 }
-    );
+    this.intersectionObserver = new IntersectionObserver(([entry]) => {
+      this.setState({
+        spinnerIsVisible: !!entry.intersectionRatio
+      });
+    });
+
+    const currentIntersectionElement = this.intersectionTargetRef.current;
+    this.intersectionObserver.observe(currentIntersectionElement);
   }
 
-  componentDidUpdate() {
-    const { fetchAlbums, userIsLoggedIn, userAlbums } = this.props;
-    const currentIntersectionElement = this.intersectionTargetRef.current;
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      fetchAlbums,
+      userIsLoggedIn,
+      userAlbums,
+      isFetchingData
+    } = this.props;
+    const { spinnerIsVisible } = this.state;
 
-    if (userIsLoggedIn) {
-      !userAlbums.length && fetchAlbums(25, 0);
-
-      currentIntersectionElement &&
+    if (!prevProps.userIsLoggedIn && userIsLoggedIn) {
+      const currentIntersectionElement = this.intersectionTargetRef.current;
+      this.props.userIsLoggedIn &&
         this.intersectionObserver.observe(currentIntersectionElement);
+    }
+
+    if (spinnerIsVisible && !isFetchingData) {
+      fetchAlbums(25, userAlbums.length);
     }
   }
 
@@ -118,7 +130,10 @@ class App extends React.Component<
                 </SingleAlbumContainer>
               ))}
             </AlbumsWrapper>
-            {userAlbums.length < userAlbumsCount && (
+          </>
+        )}
+        {userIsLoggedIn &&
+          (!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
               <Spinner
                 ref={this.intersectionTargetRef}
                 id="loadingSpinnerPageBottom"
@@ -126,8 +141,6 @@ class App extends React.Component<
                 Loading...
               </Spinner>
             )}
-          </>
-        )}
       </div>
     );
   }

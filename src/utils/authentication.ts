@@ -37,8 +37,6 @@ export const setAuthTokenForRequests = () => {
   if (typeof access_token === 'string') {
     spotifyApi.setAccessToken(access_token);
     console.log('spotifyApi.setAccessToken(access_token);');
-  } else {
-    console.error('There was a problem while parsing your Auth Token');
   }
 };
 

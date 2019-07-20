@@ -24,7 +24,13 @@ const userAlbums = (state = [], action) => {
 const authentication = (state = {}, action) => {
   switch (action.type) {
     case ACTIONS.SET_LOGGED_IN_STATE: {
-      return { state, userIsLoggedIn: action.loggedInState };
+      return { userIsLoggedIn: action.loggedInState };
+    }
+    default:
+      return state;
+  }
+};
+
     }
     default:
       return state;
@@ -44,9 +50,19 @@ const albumsMarkedForDeletion = (state = [], action) => {
   }
 };
 
+const loadingState = (state = { isFetchingData: false }, action) => {
+  switch (action.type) {
+    case ACTIONS.SET_LOADING_STATE: {
+      return { isFetchingData: action.state };
+    }
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   authentication,
   userAlbumsCount,
   userAlbums,
-  albumsMarkedForDeletion
+  loadingState
 });
