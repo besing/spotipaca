@@ -31,6 +31,13 @@ const authentication = (state = {}, action) => {
   }
 };
 
+const usersFavorites = (state = { artists: [], tracks: [] }, action) => {
+  switch (action.type) {
+    case ACTIONS.SAVE_USERS_FAVORITE_ARTISTS: {
+      return { ...state, artists: [...action.artistsResponse.items] };
+    }
+    case ACTIONS.SAVE_USERS_FAVORITE_TRACKS: {
+      return { ...state, tracks: [...action.tracksResponse.items] };
     }
     default:
       return state;
@@ -64,5 +71,7 @@ export default combineReducers({
   authentication,
   userAlbumsCount,
   userAlbums,
+  usersFavorites,
+  albumsMarkedForDeletion,
   loadingState
 });

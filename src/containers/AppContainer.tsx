@@ -1,15 +1,25 @@
 import { connect } from 'react-redux';
 
-import { fetchAlbums, checkAuthTokenValidity } from '../actions';
+import {
+  fetchAlbums,
+  checkAuthTokenValidity,
+  fetchUsersFavorites
+} from '../actions';
 import App from '../components/App';
 
 const mapStateToProps = state => ({
   userAlbums: state.userAlbums,
   userAlbumsCount: state.userAlbumsCount,
-  userIsLoggedIn: state.authentication.userIsLoggedIn
+  userIsLoggedIn: state.authentication.userIsLoggedIn,
+  usersFavorites: state.usersFavorites,
+  isFetchingData: state.loadingState.isFetchingData
 });
 
 export default connect(
   mapStateToProps,
-  { fetchAlbums, checkAuthTokenValidity }
+  {
+    fetchAlbums,
+    checkAuthTokenValidity,
+    fetchUsersFavorites
+  }
 )(App);

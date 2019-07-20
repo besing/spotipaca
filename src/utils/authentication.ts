@@ -4,7 +4,7 @@ import queryString from 'query-string';
 const authUrl = 'https://accounts.spotify.com/authorize';
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const redirectUrl = 'http://localhost:3000/redirect';
-const userScope = 'user-library-read user-library-modify'; // TODO: 'user-top-read' seems broken ('Illegal Scope')
+const userScope = 'user-library-read user-library-modify user-top-read';
 
 const generateRandomString = (length: number) => {
   let text = '';
