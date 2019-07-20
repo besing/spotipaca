@@ -86,7 +86,6 @@ export const fetchAlbums = (limit: number, offset: number) => dispatch => {
   dispatch(setLoadingState(true));
   spotifyApi.getMySavedAlbums({ limit, offset }).then(
     res => {
-      console.log('res:', res);
       dispatch(saveAlbumsToState(res));
       dispatch(setLoadingState(false));
     },

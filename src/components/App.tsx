@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { authenticate } from '../utils/authentication';
-import { sortUserAlbums } from '../utils/userAlbums';
+import { sortUserAlbums, filterUsersFavorites } from '../utils/userAlbums';
 import AlbumsWrapper from './AlbumsWrapper';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 import Spinner from './Spinner';
@@ -18,7 +18,12 @@ class App extends React.Component<
     usersFavorites;
     isFetchingData;
   },
-  { albumSortOrderBy: string; albumSortOrder; spinnerIsVisible: boolean }
+  {
+    albumSortOrderBy: string;
+    albumSortOrder;
+    spinnerIsVisible: boolean;
+    favoritesFilterIsActive: boolean;
+  }
 > {
   intersectionTargetRef: any;
   intersectionObserver: IntersectionObserver;
@@ -29,7 +34,8 @@ class App extends React.Component<
     this.state = {
       albumSortOrderBy: 'added_at',
       albumSortOrder: 'descending',
-      spinnerIsVisible: null
+      spinnerIsVisible: null,
+      favoritesFilterIsActive: false
     };
 
     this.intersectionTargetRef = React.createRef();
@@ -43,9 +49,6 @@ class App extends React.Component<
         spinnerIsVisible: !!entry.intersectionRatio
       });
     });
-
-    const currentIntersectionElement = this.intersectionTargetRef.current;
-    this.intersectionObserver.observe(currentIntersectionElement);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -53,12 +56,18 @@ class App extends React.Component<
       fetchAlbums,
       userIsLoggedIn,
       userAlbums,
-      isFetchingData
+      isFetchingData,
+      usersFavorites
     } = this.props;
     const { spinnerIsVisible } = this.state;
 
-    prevProps.userIsLoggedIn !== userIsLoggedIn &&
-      this.props.fetchUsersFavorites();
+    if (!prevProps.userIsLoggedIn && userIsLoggedIn) {
+      this.props.userIsLoggedIn && this.props.fetchUsersFavorites();
+
+      const currentIntersectionElement = this.intersectionTargetRef.current;
+      this.props.userIsLoggedIn &&
+        this.intersectionObserver.observe(currentIntersectionElement);
+    }
 
     if (spinnerIsVisible && !isFetchingData) {
       fetchAlbums(25, userAlbums.length);
@@ -77,14 +86,28 @@ class App extends React.Component<
     });
   };
 
+  handleFavoritesFilter = e => {
+    this.setState({
+      favoritesFilterIsActive: !this.state.favoritesFilterIsActive
+    });
+  };
+
   render() {
-    console.log('STATE: ', this.state);
+    // console.log('STATE: ', this.state);
     const {
       fetchAlbums,
       userAlbums,
       userAlbumsCount,
-      userIsLoggedIn
+      userIsLoggedIn,
+      usersFavorites
     } = this.props;
+
+    const filterableAlbums = filterUsersFavorites(
+      userAlbums,
+      usersFavorites.artists,
+      usersFavorites.tracks,
+      this.state.favoritesFilterIsActive
+    );
 
     return (
       <div className="App">
@@ -110,9 +133,19 @@ class App extends React.Component<
               onOrderByChange={this.handleSortOrderByChange}
               onSortOrderChange={this.handleSortOrderChange}
             />
+
+            <label>
+              Smart Filter
+              <input
+                type="checkbox"
+                checked={this.state.favoritesFilterIsActive}
+                onChange={this.handleFavoritesFilter}
+              />
+            </label>
+
             <AlbumsWrapper>
               {sortUserAlbums(
-                userAlbums,
+                filterableAlbums,
                 this.state.albumSortOrderBy,
                 this.state.albumSortOrder
               ).map((album: any) => (
@@ -131,14 +164,15 @@ class App extends React.Component<
             </AlbumsWrapper>
           </>
         )}
-        {(!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
-          <Spinner
-            ref={this.intersectionTargetRef}
-            id="loadingSpinnerPageBottom"
-          >
-            Loading...
-          </Spinner>
-        )}
+        {userIsLoggedIn &&
+          (!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
+            <Spinner
+              ref={this.intersectionTargetRef}
+              id="loadingSpinnerPageBottom"
+            >
+              Loading...
+            </Spinner>
+          )}
       </div>
     );
   }
