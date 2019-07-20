@@ -166,12 +166,7 @@ class App extends React.Component<
         )}
         {userIsLoggedIn &&
           (!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
-            <Spinner
-              ref={this.intersectionTargetRef}
-              id="loadingSpinnerPageBottom"
-            >
-              Loading...
-            </Spinner>
+            <Spinner ref={this.intersectionTargetRef} />
           )}
       </div>
     );

@@ -1,10 +1,16 @@
+import React from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import styled from 'styled-components';
 
-const Spinner = styled.div`
-  font-size: 1.5em;
-  font-weight: bold;
+const StyledSpinner = styled.div`
+  margin: 50px;
   text-align: center;
-  margin-top: 50px;
 `;
+
+const Spinner = React.forwardRef((props, ref) => (
+  <StyledSpinner>
+    <CircularProgress ref={ref} color="inherit" />
+  </StyledSpinner>
+));
 
 export default Spinner;
