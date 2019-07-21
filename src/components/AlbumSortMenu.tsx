@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 interface IAlbumSortMenuProps {
   sortOrderBy: 'added_at' | 'popularity';
@@ -19,17 +23,19 @@ const AlbumSortMenu = ({
   onSortOrderChange
 }: IAlbumSortMenuProps) => (
   <StyledAlbumSortMenu>
-    <label>
-      Sort albums by
-      <select value={sortOrderBy} onChange={e => onOrderByChange(e)}>
-        <option value="added_at">Date</option>
-        <option value="popularity">Popularity</option>
-      </select>
-    </label>
-    <select value={sortOrder} onChange={e => onSortOrderChange(e)}>
-      <option value="descending">descending</option>
-      <option value="ascending">ascending</option>
-    </select>
+    <FormControl>
+      <InputLabel shrink>Sort by</InputLabel>
+      <Select value={sortOrderBy} onChange={e => onOrderByChange(e)}>
+        <MenuItem value="added_at">Most recent</MenuItem>
+        <MenuItem value="popularity">Popularity</MenuItem>
+      </Select>
+    </FormControl>
+    <FormControl>
+      <Select value={sortOrder} onChange={e => onSortOrderChange(e)}>
+        <MenuItem value="descending">Descending</MenuItem>
+        <MenuItem value="ascending">Ascending</MenuItem>
+      </Select>
+    </FormControl>
   </StyledAlbumSortMenu>
 );
 

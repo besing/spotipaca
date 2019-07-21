@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
 
 body {
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Noto Sans KR', 'Segoe UI', 'Roboto', -apple-system,
+  font-family: 'Roboto', 'Noto Sans KR', 'Segoe UI', -apple-system,
     BlinkMacSystemFont, 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;

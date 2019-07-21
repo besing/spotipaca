@@ -19,7 +19,6 @@ const AlbumSizeToggle = ({
   <ToggleButtonGroup
     value={currentSize}
     onChange={(e, value) => handleAlbumSizeToggleChange(e, value)}
-    size="small"
     exclusive
   >
     <ToggleButton value="small" disableRipple>

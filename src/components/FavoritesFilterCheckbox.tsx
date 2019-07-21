@@ -1,7 +1,6 @@
 import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { withStyles } from '@material-ui/styles';
 
 interface IFavoritesFilterCheckboxProps {
   filterActive: boolean;
@@ -9,18 +8,12 @@ interface IFavoritesFilterCheckboxProps {
   handleFavoritesFilterChange: () => void;
 }
 
-const StyledFormControlLabel = withStyles({
-  label: {
-    fontFamily: 'inherit'
-  }
-})(FormControlLabel);
-
 const FavoritesFilterCheckbox = ({
   filterActive,
   label,
   handleFavoritesFilterChange
 }: IFavoritesFilterCheckboxProps) => (
-  <StyledFormControlLabel
+  <FormControlLabel
     control={
       <Checkbox
         checked={filterActive}
