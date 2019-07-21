@@ -23,7 +23,7 @@ const StyledOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgba(245, 97, 97, 0.8);
+  color: rgba(226, 57, 57, 1);
   z-index: 1;
 `;
 

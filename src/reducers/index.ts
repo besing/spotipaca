@@ -79,6 +79,9 @@ const albumsMarkedForDeletion = (
       }
       return [...state, action.albumId];
     }
+    case ACTIONS.REMOVE_ALBUMS_FROM_UI: {
+      return [];
+    }
     default:
       return state;
   }

@@ -47,3 +47,7 @@ export const filterUsersFavorites = (
         !usersFavoriteTracks.some(track => track.album.id === album.album.id)
     );
 };
+
+export const getAlbumI18n = (
+  albums: string[] | SpotifyApi.SavedAlbumObject[]
+) => (albums.length === 1 ? 'album' : 'albums');

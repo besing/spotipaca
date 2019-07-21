@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { authenticate } from '../utils/authentication';
-import { sortUserAlbums, filterUsersFavorites } from '../utils/userAlbums';
+import {
+  sortUserAlbums,
+  filterUsersFavorites,
+  getAlbumI18n
+} from '../utils/userAlbums';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 import { IAppProps } from '../containers/AppContainer';
 import AlbumsWrapper from './AlbumsWrapper';
@@ -9,6 +13,7 @@ import Spinner from './Spinner';
 import AlbumSortMenu from './AlbumSortMenu';
 import AlbumSizeToggle from './AlbumSizeToggle';
 import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
+import DeleteButton from './DeleteButton';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
@@ -153,17 +158,17 @@ class App extends React.Component<IAppProps, IAppState> {
 
             <div>
               {albumsMarkedForDeletion.length}{' '}
-              {albumsMarkedForDeletion.length === 1 ? `Album` : `Albums`} marked
-              for deletion
+              {getAlbumI18n(albumsMarkedForDeletion)} marked for deletion
             </div>
 
             <div>
-              <button
+              <DeleteButton
+                onButtonClick={() => deleteAlbums(albumsMarkedForDeletion)}
+                label={`Delete selected ${getAlbumI18n(
+                  albumsMarkedForDeletion
+                )}`}
                 disabled={!albumsMarkedForDeletion.length}
-                onClick={() => deleteAlbums(albumsMarkedForDeletion)}
-              >
-                🗑 DELETE marked Albums ❌
-              </button>
+              />
             </div>
 
             <AlbumSizeToggle
