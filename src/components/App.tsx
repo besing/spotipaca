@@ -18,6 +18,7 @@ class App extends React.Component<
     usersFavorites;
     isFetchingData;
     albumsMarkedForDeletion;
+    deleteAlbums;
   },
   {
     albumSortOrderBy: string;
@@ -101,7 +102,8 @@ class App extends React.Component<
       userAlbumsCount,
       userIsLoggedIn,
       usersFavorites,
-      albumsMarkedForDeletion
+      albumsMarkedForDeletion,
+      deleteAlbums
     } = this.props;
 
     const filterableAlbums = filterUsersFavorites(
@@ -149,6 +151,15 @@ class App extends React.Component<
               {albumsMarkedForDeletion.length}{' '}
               {albumsMarkedForDeletion.length === 1 ? `Album` : `Albums`} marked
               for deletion
+            </div>
+
+            <div>
+              <button
+                disabled={!albumsMarkedForDeletion.length}
+                onClick={() => deleteAlbums(albumsMarkedForDeletion)}
+              >
+                🗑 DELETE marked Albums ❌
+              </button>
             </div>
 
             <AlbumsWrapper>

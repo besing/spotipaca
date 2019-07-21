@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
   fetchAlbums,
   checkAuthTokenValidity,
-  fetchUsersFavorites
+  fetchUsersFavorites,
+  deleteAlbums
 } from '../actions';
 import App from '../components/App';
 
@@ -21,6 +22,7 @@ export default connect(
   {
     fetchAlbums,
     checkAuthTokenValidity,
-    fetchUsersFavorites
+    fetchUsersFavorites,
+    deleteAlbums
   }
 )(App);

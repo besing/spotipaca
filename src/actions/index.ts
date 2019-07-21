@@ -6,7 +6,8 @@ export const ACTIONS = {
   MARK_ALBUM_FOR_DELETION: 'MARK_ALBUM_FOR_DELETION',
   SAVE_USERS_FAVORITE_ARTISTS: 'SAVE_USERS_FAVORITE_ARTISTS',
   SAVE_USERS_FAVORITE_TRACKS: 'SAVE_USERS_FAVORITE_TRACKS',
-  SET_LOADING_STATE: 'SET_LOADING_STATE'
+  SET_LOADING_STATE: 'SET_LOADING_STATE',
+  REMOVE_ALBUMS_FROM_UI: 'REMOVE_ALBUMS_FROM_UI'
 };
 
 const setLoggedInState = (loggedInState: boolean) => ({
@@ -37,6 +38,11 @@ const setLoadingState = state => ({
 export const markAlbumForDeletion = albumId => ({
   type: ACTIONS.MARK_ALBUM_FOR_DELETION,
   albumId
+});
+
+const removeAlbumsFromUi = albumIds => ({
+  type: ACTIONS.REMOVE_ALBUMS_FROM_UI,
+  albumIds
 });
 
 /**
@@ -93,5 +99,14 @@ export const fetchAlbums = (limit: number, offset: number) => dispatch => {
       console.error(err);
       dispatch(setLoadingState(false));
     }
+  );
+};
+
+export const deleteAlbums = albumIds => dispatch => {
+  spotifyApi.removeFromMySavedAlbums(albumIds).then(
+    res => {
+      dispatch(removeAlbumsFromUi(albumIds));
+    },
+    err => console.error(err)
   );
 };

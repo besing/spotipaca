@@ -16,6 +16,9 @@ const userAlbums = (state = [], action) => {
     case ACTIONS.SAVE_ALBUMS_TO_STATE: {
       return [...state, ...action.albumsResponse.items];
     }
+    case ACTIONS.REMOVE_ALBUMS_FROM_UI: {
+      return state.filter(album => !action.albumIds.includes(album.album.id));
+    }
     default:
       return state;
   }
