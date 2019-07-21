@@ -8,6 +8,7 @@ import AlbumsWrapper from './AlbumsWrapper';
 import Spinner from './Spinner';
 import AlbumSortMenu from './AlbumSortMenu';
 import AlbumSizeToggle from './AlbumSizeToggle';
+import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
@@ -79,7 +80,7 @@ class App extends React.Component<IAppProps, IAppState> {
     });
   };
 
-  handleFavoritesFilter = (e: React.BaseSyntheticEvent) => {
+  handleFavoritesFilter = () => {
     this.setState({
       favoritesFilterIsActive: !this.state.favoritesFilterIsActive
     });
@@ -105,11 +106,18 @@ class App extends React.Component<IAppProps, IAppState> {
       deleteAlbums
     } = this.props;
 
+    const {
+      favoritesFilterIsActive,
+      albumImageSize,
+      albumSortOrder,
+      albumSortOrderBy
+    } = this.state;
+
     const filterableAlbums = filterUsersFavorites(
       userAlbums,
       usersFavorites.artists,
       usersFavorites.tracks,
-      this.state.favoritesFilterIsActive
+      favoritesFilterIsActive
     );
 
     return (
@@ -131,20 +139,17 @@ class App extends React.Component<IAppProps, IAppState> {
         {!!userAlbums.length && (
           <>
             <AlbumSortMenu
-              sortOrderBy={this.state.albumSortOrderBy}
-              sortOrder={this.state.albumSortOrder}
+              sortOrderBy={albumSortOrderBy}
+              sortOrder={albumSortOrder}
               onOrderByChange={this.handleSortOrderByChange}
               onSortOrderChange={this.handleSortOrderChange}
             />
 
-            <label>
-              Smart Filter
-              <input
-                type="checkbox"
-                checked={this.state.favoritesFilterIsActive}
-                onChange={this.handleFavoritesFilter}
-              />
-            </label>
+            <FavoritesFilterCheckbox
+              filterActive={favoritesFilterIsActive}
+              label="Smart Filter"
+              handleFavoritesFilterChange={this.handleFavoritesFilter}
+            />
 
             <div>
               {albumsMarkedForDeletion.length}{' '}
@@ -162,20 +167,20 @@ class App extends React.Component<IAppProps, IAppState> {
             </div>
 
             <AlbumSizeToggle
-              currentSize={this.state.albumImageSize}
+              currentSize={albumImageSize}
               handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
             />
 
             <AlbumsWrapper>
               {sortUserAlbums(
                 filterableAlbums,
-                this.state.albumSortOrderBy,
-                this.state.albumSortOrder
+                albumSortOrderBy,
+                albumSortOrder
               ).map(album => (
                 <SingleAlbumContainer
                   key={album.album.id}
                   id={album.album.id}
-                  albumImageSize={this.state.albumImageSize}
+                  albumImageSize={albumImageSize}
                 >
                   <img
                     src={album.album.images[1].url}
