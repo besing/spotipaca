@@ -12,7 +12,8 @@ const mapStateToProps = state => ({
   userAlbumsCount: state.userAlbumsCount,
   userIsLoggedIn: state.authentication.userIsLoggedIn,
   usersFavorites: state.usersFavorites,
-  isFetchingData: state.loadingState.isFetchingData
+  isFetchingData: state.loadingState.isFetchingData,
+  albumsMarkedForDeletion: state.albumsMarkedForDeletion
 });
 
 export default connect(

@@ -1,17 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
-const StyledAlbumDeleteButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
-
-const AlbumDeleteButton = ({ markAlbumForDeletion, id }) => (
-  <StyledAlbumDeleteButton onClick={() => markAlbumForDeletion(id)}>
-    X
-  </StyledAlbumDeleteButton>
-);
+import IndeterminateCheckBox from '@material-ui/icons/IndeterminateCheckBox';
+import { withStyles } from '@material-ui/styles';
 
 const StyledAlbumPlaceholder = styled.div`
   width: 18vw;
@@ -21,18 +11,48 @@ const StyledAlbumPlaceholder = styled.div`
   position: relative;
 `;
 
+const StyledOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: 0.2s all ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(245, 97, 97, 0.8);
+  z-index: 1;
+`;
+
+const StyledMarkForDeletionButton = withStyles({
+  root: {
+    width: '50%',
+    height: '50%'
+  }
+})(IndeterminateCheckBox);
+
 const StyledSingleAlbum = styled.figure<{
   markedForDeletion: boolean;
 }>`
   margin: 0;
   font-size: 12px;
 
-  opacity: ${props => (props.markedForDeletion ? '0.2' : 1)};
-  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    cursor: pointer;
+
+    ${StyledOverlay} {
+      opacity: 1;
+    }
+  }
 
   img {
     width: 100%;
     height: auto;
+    opacity: ${props => (props.markedForDeletion ? '0.5' : 1)};
+    transition: opacity 0.2s ease-in-out;
+    filter: ${props => props.markedForDeletion && `grayscale()`};
   }
 
   figcaption {
@@ -42,6 +62,10 @@ const StyledSingleAlbum = styled.figure<{
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
     width: 100%;
+  }
+
+  ${StyledOverlay} {
+    opacity: ${props => props.markedForDeletion && 1};
   }
 `;
 
@@ -56,11 +80,10 @@ const SingleAlbum = ({
       <StyledSingleAlbum
         markedForDeletion={albumsMarkedForDeletion.includes(id)}
       >
-        <AlbumDeleteButton
-          markAlbumForDeletion={markAlbumForDeletion}
-          id={id}
-        />
         {children}
+        <StyledOverlay onClick={() => markAlbumForDeletion(id)}>
+          <StyledMarkForDeletionButton />
+        </StyledOverlay>
       </StyledSingleAlbum>
     </StyledAlbumPlaceholder>
   );
