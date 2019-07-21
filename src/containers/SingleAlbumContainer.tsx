@@ -17,6 +17,7 @@ const mapDispatchToProps = {
 type IStateProps = ReturnType<typeof mapStateToProps>;
 type IDispatchProps = typeof mapDispatchToProps;
 interface IOwnProps {
+  albumImageSize: 'small' | 'large';
   id: string;
   children: React.ReactNode;
 }

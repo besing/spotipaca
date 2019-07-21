@@ -7,12 +7,14 @@ import { IAppProps } from '../containers/AppContainer';
 import AlbumsWrapper from './AlbumsWrapper';
 import Spinner from './Spinner';
 import AlbumSortMenu from './AlbumSortMenu';
+import AlbumSizeToggle from './AlbumSizeToggle';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
   albumSortOrder: 'ascending' | 'descending';
   spinnerIsVisible: boolean;
   favoritesFilterIsActive: boolean;
+  albumImageSize: 'small' | 'large';
 }
 
 class App extends React.Component<IAppProps, IAppState> {
@@ -26,7 +28,8 @@ class App extends React.Component<IAppProps, IAppState> {
       albumSortOrderBy: 'added_at',
       albumSortOrder: 'descending',
       spinnerIsVisible: false,
-      favoritesFilterIsActive: false
+      favoritesFilterIsActive: false,
+      albumImageSize: 'large'
     };
 
     this.intersectionTargetRef = React.createRef();
@@ -79,6 +82,15 @@ class App extends React.Component<IAppProps, IAppState> {
   handleFavoritesFilter = (e: React.BaseSyntheticEvent) => {
     this.setState({
       favoritesFilterIsActive: !this.state.favoritesFilterIsActive
+    });
+  };
+
+  handleAlbumSizeToggle = (
+    e: React.BaseSyntheticEvent,
+    value: IAppState['albumImageSize']
+  ) => {
+    this.setState({
+      albumImageSize: value
     });
   };
 
@@ -149,13 +161,22 @@ class App extends React.Component<IAppProps, IAppState> {
               </button>
             </div>
 
+            <AlbumSizeToggle
+              currentSize={this.state.albumImageSize}
+              handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
+            />
+
             <AlbumsWrapper>
               {sortUserAlbums(
                 filterableAlbums,
                 this.state.albumSortOrderBy,
                 this.state.albumSortOrder
               ).map(album => (
-                <SingleAlbumContainer key={album.album.id} id={album.album.id}>
+                <SingleAlbumContainer
+                  key={album.album.id}
+                  id={album.album.id}
+                  albumImageSize={this.state.albumImageSize}
+                >
                   <img
                     src={album.album.images[1].url}
                     width="300"

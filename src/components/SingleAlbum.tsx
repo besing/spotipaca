@@ -4,9 +4,9 @@ import IndeterminateCheckBox from '@material-ui/icons/IndeterminateCheckBox';
 import { withStyles } from '@material-ui/styles';
 import { ISingleAlbumProps } from '../containers/SingleAlbumContainer';
 
-const StyledAlbumPlaceholder = styled.div`
-  width: 18vw;
-  height: 18vw;
+const StyledAlbumPlaceholder = styled.div<Partial<ISingleAlbumProps>>`
+  width: ${props => (props.albumImageSize === 'large' ? '300px' : '150px')};
+  height: ${props => (props.albumImageSize === 'large' ? '300px' : '150px')};
   margin: 0 3px 3px 0;
   background: rgba(0, 0, 0, 0.3);
   position: relative;
@@ -74,10 +74,11 @@ const SingleAlbum = ({
   id,
   markAlbumForDeletion,
   albumsMarkedForDeletion,
+  albumImageSize,
   children
 }: ISingleAlbumProps) => {
   return (
-    <StyledAlbumPlaceholder>
+    <StyledAlbumPlaceholder albumImageSize={albumImageSize}>
       <StyledSingleAlbum
         markedForDeletion={albumsMarkedForDeletion.includes(id)}
       >
