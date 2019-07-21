@@ -2,41 +2,30 @@ import React from 'react';
 
 import { authenticate } from '../utils/authentication';
 import { sortUserAlbums, filterUsersFavorites } from '../utils/userAlbums';
-import AlbumsWrapper from './AlbumsWrapper';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
+import { IAppProps } from '../containers/AppContainer';
+import AlbumsWrapper from './AlbumsWrapper';
 import Spinner from './Spinner';
 import AlbumSortMenu from './AlbumSortMenu';
 
-class App extends React.Component<
-  {
-    fetchAlbums?;
-    userAlbums?;
-    userAlbumsCount?;
-    checkAuthTokenValidity?;
-    userIsLoggedIn?;
-    fetchUsersFavorites;
-    usersFavorites;
-    isFetchingData;
-    albumsMarkedForDeletion;
-    deleteAlbums;
-  },
-  {
-    albumSortOrderBy: string;
-    albumSortOrder;
-    spinnerIsVisible: boolean;
-    favoritesFilterIsActive: boolean;
-  }
-> {
-  intersectionTargetRef: any;
-  intersectionObserver: IntersectionObserver;
+interface IAppState {
+  albumSortOrderBy: 'added_at' | 'popularity';
+  albumSortOrder: 'ascending' | 'descending';
+  spinnerIsVisible: boolean;
+  favoritesFilterIsActive: boolean;
+}
 
-  constructor(props) {
+class App extends React.Component<IAppProps, IAppState> {
+  intersectionTargetRef: any;
+  intersectionObserver!: IntersectionObserver;
+
+  constructor(props: IAppProps) {
     super(props);
 
     this.state = {
       albumSortOrderBy: 'added_at',
       albumSortOrder: 'descending',
-      spinnerIsVisible: null,
+      spinnerIsVisible: false,
       favoritesFilterIsActive: false
     };
 
@@ -53,13 +42,12 @@ class App extends React.Component<
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: IAppProps) {
     const {
       fetchAlbums,
       userIsLoggedIn,
       userAlbums,
-      isFetchingData,
-      usersFavorites
+      isFetchingData
     } = this.props;
     const { spinnerIsVisible } = this.state;
 
@@ -76,26 +64,25 @@ class App extends React.Component<
     }
   }
 
-  handleSortOrderByChange = e => {
+  handleSortOrderByChange = (e: React.BaseSyntheticEvent) => {
     this.setState({
       albumSortOrderBy: e.target.value
     });
   };
 
-  handleSortOrderChange = e => {
+  handleSortOrderChange = (e: React.BaseSyntheticEvent) => {
     this.setState({
       albumSortOrder: e.target.value
     });
   };
 
-  handleFavoritesFilter = e => {
+  handleFavoritesFilter = (e: React.BaseSyntheticEvent) => {
     this.setState({
       favoritesFilterIsActive: !this.state.favoritesFilterIsActive
     });
   };
 
   render() {
-    // console.log('STATE: ', this.state);
     const {
       fetchAlbums,
       userAlbums,
@@ -121,7 +108,7 @@ class App extends React.Component<
             <button onClick={() => authenticate()}>Login</button>
           </div>
         ) : (
-          !userAlbums.length && (
+          !userAlbums.length && ( // TODO: still necessary?
             <div>
               <button onClick={() => fetchAlbums(10, 0)}>
                 Fetch most recent albums
@@ -167,7 +154,7 @@ class App extends React.Component<
                 filterableAlbums,
                 this.state.albumSortOrderBy,
                 this.state.albumSortOrder
-              ).map((album: any) => (
+              ).map(album => (
                 <SingleAlbumContainer key={album.album.id} id={album.album.id}>
                   <img
                     src={album.album.images[1].url}

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import IndeterminateCheckBox from '@material-ui/icons/IndeterminateCheckBox';
 import { withStyles } from '@material-ui/styles';
+import { ISingleAlbumProps } from '../containers/SingleAlbumContainer';
 
 const StyledAlbumPlaceholder = styled.div`
   width: 18vw;
@@ -74,7 +75,7 @@ const SingleAlbum = ({
   markAlbumForDeletion,
   albumsMarkedForDeletion,
   children
-}) => {
+}: ISingleAlbumProps) => {
   return (
     <StyledAlbumPlaceholder>
       <StyledSingleAlbum

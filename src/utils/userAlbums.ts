@@ -1,6 +1,6 @@
 export const sortUserAlbums = (
-  userAlbums,
-  orderBy,
+  userAlbums: SpotifyApi.SavedAlbumObject[],
+  orderBy: 'added_at' | 'popularity',
   order: 'ascending' | 'descending'
 ) => {
   const sortedAlbums = userAlbums.slice().sort((a, b) => {
@@ -21,7 +21,7 @@ export const sortUserAlbums = (
     if (orderBy === 'popularity') {
       return b.album[orderBy] - a.album[orderBy];
     }
-    return null;
+    return 0;
   });
   return order === 'ascending' ? sortedAlbums.reverse() : sortedAlbums;
 };

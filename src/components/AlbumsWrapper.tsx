@@ -7,7 +7,7 @@ const StyledAlbumsWrapper = styled.div`
   margin: 1em;
 `;
 
-const AlbumsWrapper = ({ children }) => (
+const AlbumsWrapper: React.FunctionComponent = ({ children }) => (
   <StyledAlbumsWrapper>{children}</StyledAlbumsWrapper>
 );
 

@@ -1,6 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface IAlbumSortMenuProps {
+  sortOrderBy: 'added_at' | 'popularity';
+  sortOrder: 'ascending' | 'descending';
+  onOrderByChange: (e: React.BaseSyntheticEvent) => void;
+  onSortOrderChange: (e: React.BaseSyntheticEvent) => void;
+}
+
 const StyledAlbumSortMenu = styled.div`
   margin: 1em;
 `;
@@ -10,7 +17,7 @@ const AlbumSortMenu = ({
   sortOrder,
   onOrderByChange,
   onSortOrderChange
-}) => (
+}: IAlbumSortMenuProps) => (
   <StyledAlbumSortMenu>
     <label>
       Sort albums by

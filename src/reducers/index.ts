@@ -1,7 +1,19 @@
 import { combineReducers } from 'redux';
-import { ACTIONS } from '../actions';
 
-const userAlbumsCount = (state = 0, action) => {
+import {
+  IUserAlbumsCount,
+  IAuthentication,
+  IUserAlbums,
+  IUsersFavorites,
+  IAlbumsMarkedForDeletion,
+  ILoadingState
+} from './types';
+import { ACTIONS, ICombinedActionsInterface } from '../actions/types';
+
+const userAlbumsCount = (
+  state: IUserAlbumsCount = 0,
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.SAVE_ALBUMS_TO_STATE: {
       return action.albumsResponse.total;
@@ -11,7 +23,10 @@ const userAlbumsCount = (state = 0, action) => {
   }
 };
 
-const userAlbums = (state = [], action) => {
+const userAlbums = (
+  state: IUserAlbums = [],
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.SAVE_ALBUMS_TO_STATE: {
       return [...state, ...action.albumsResponse.items];
@@ -24,7 +39,10 @@ const userAlbums = (state = [], action) => {
   }
 };
 
-const authentication = (state = {}, action) => {
+const authentication = (
+  state: IAuthentication = { userIsLoggedIn: false },
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.SET_LOGGED_IN_STATE: {
       return { userIsLoggedIn: action.loggedInState };
@@ -34,7 +52,10 @@ const authentication = (state = {}, action) => {
   }
 };
 
-const usersFavorites = (state = { artists: [], tracks: [] }, action) => {
+const usersFavorites = (
+  state: IUsersFavorites = { artists: [], tracks: [] },
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.SAVE_USERS_FAVORITE_ARTISTS: {
       return { ...state, artists: [...action.artistsResponse.items] };
@@ -47,7 +68,10 @@ const usersFavorites = (state = { artists: [], tracks: [] }, action) => {
   }
 };
 
-const albumsMarkedForDeletion = (state = [], action) => {
+const albumsMarkedForDeletion = (
+  state: IAlbumsMarkedForDeletion = [],
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.MARK_ALBUM_FOR_DELETION: {
       if (state.includes(action.albumId)) {
@@ -60,7 +84,10 @@ const albumsMarkedForDeletion = (state = [], action) => {
   }
 };
 
-const loadingState = (state = { isFetchingData: false }, action) => {
+const loadingState = (
+  state: ILoadingState = { isFetchingData: false },
+  action: ICombinedActionsInterface
+) => {
   switch (action.type) {
     case ACTIONS.SET_LOADING_STATE: {
       return { isFetchingData: action.state };
@@ -70,7 +97,7 @@ const loadingState = (state = { isFetchingData: false }, action) => {
   }
 };
 
-export default combineReducers({
+const rootReducer = combineReducers({
   authentication,
   userAlbumsCount,
   userAlbums,
@@ -78,3 +105,7 @@ export default combineReducers({
   albumsMarkedForDeletion,
   loadingState
 });
+
+export type AppState = ReturnType<typeof rootReducer>;
+
+export default rootReducer;
