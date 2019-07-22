@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import { authenticate } from '../utils/authentication';
 import {
@@ -14,6 +15,7 @@ import AlbumSortMenu from './AlbumSortMenu';
 import AlbumSizeToggle from './AlbumSizeToggle';
 import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
 import DeleteButton from './DeleteButton';
+import LoginPrompt from './LoginPrompt';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
@@ -22,6 +24,10 @@ interface IAppState {
   favoritesFilterIsActive: boolean;
   albumImageSize: 'small' | 'large';
 }
+
+const StyledApp = styled.div`
+  background: #333;
+`;
 
 class App extends React.Component<IAppProps, IAppState> {
   intersectionTargetRef: any;
@@ -68,7 +74,8 @@ class App extends React.Component<IAppProps, IAppState> {
         this.intersectionObserver.observe(currentIntersectionElement);
     }
 
-    if (spinnerIsVisible && !isFetchingData) {
+    if (spinnerIsVisible && !isFetchingData && !userAlbums.length) {
+      // TODO: revert original state when finished
       fetchAlbums(25, userAlbums.length);
     }
   }
@@ -127,84 +134,75 @@ class App extends React.Component<IAppProps, IAppState> {
 
     return (
       <div className="App">
-        {!userIsLoggedIn ? (
-          <div>
-            <h5>Please login and grant Spotify access to continue</h5>
-            <button onClick={() => authenticate()}>Login</button>
-          </div>
-        ) : (
-          !userAlbums.length && ( // TODO: still necessary?
-            <div>
-              <button onClick={() => fetchAlbums(10, 0)}>
-                Fetch most recent albums
-              </button>
-            </div>
-          )
-        )}
-        {!!userAlbums.length && (
-          <>
-            <AlbumSortMenu
-              sortOrderBy={albumSortOrderBy}
-              sortOrder={albumSortOrder}
-              onOrderByChange={this.handleSortOrderByChange}
-              onSortOrderChange={this.handleSortOrderChange}
-            />
-
-            <FavoritesFilterCheckbox
-              filterActive={favoritesFilterIsActive}
-              label="Smart Filter"
-              handleFavoritesFilterChange={this.handleFavoritesFilter}
-            />
-
-            <div>
-              {albumsMarkedForDeletion.length}{' '}
-              {getAlbumI18n(albumsMarkedForDeletion)} marked for deletion
-            </div>
-
-            <div>
-              <DeleteButton
-                onButtonClick={() => deleteAlbums(albumsMarkedForDeletion)}
-                label={`Delete selected ${getAlbumI18n(
-                  albumsMarkedForDeletion
-                )}`}
-                disabled={!albumsMarkedForDeletion.length}
-              />
-            </div>
-
-            <AlbumSizeToggle
-              currentSize={albumImageSize}
-              handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
-            />
-
-            <AlbumsWrapper>
-              {sortUserAlbums(
-                filterableAlbums,
-                albumSortOrderBy,
-                albumSortOrder
-              ).map(album => (
-                <SingleAlbumContainer
-                  key={album.album.id}
-                  id={album.album.id}
-                  albumImageSize={albumImageSize}
-                >
-                  <img
-                    src={album.album.images[1].url}
-                    width="300"
-                    height="300"
-                    alt={album.album.name}
-                  />
-                  <figcaption>{`(${album.album.popularity}) ${
-                    album.album.artists[0].name
-                  }: ${album.album.name}`}</figcaption>
-                </SingleAlbumContainer>
-              ))}
-            </AlbumsWrapper>
-          </>
-        )}
-        {userIsLoggedIn &&
-          (!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
-            <Spinner ref={this.intersectionTargetRef} />
+        <StyledApp>
+          {!userIsLoggedIn && (
+            <LoginPrompt onButtonClick={() => authenticate()} />
           )}
+          {!!userAlbums.length && (
+            <>
+              <AlbumSortMenu
+                sortOrderBy={albumSortOrderBy}
+                sortOrder={albumSortOrder}
+                onOrderByChange={this.handleSortOrderByChange}
+                onSortOrderChange={this.handleSortOrderChange}
+              />
+
+              <FavoritesFilterCheckbox
+                filterActive={favoritesFilterIsActive}
+                label="Smart Filter"
+                handleFavoritesFilterChange={this.handleFavoritesFilter}
+              />
+
+              <div>
+                {albumsMarkedForDeletion.length}{' '}
+                {getAlbumI18n(albumsMarkedForDeletion)} marked for deletion
+              </div>
+
+              <div>
+                <DeleteButton
+                  onButtonClick={() => deleteAlbums(albumsMarkedForDeletion)}
+                  label={`Delete selected ${getAlbumI18n(
+                    albumsMarkedForDeletion
+                  )}`}
+                  disabled={!albumsMarkedForDeletion.length}
+                />
+              </div>
+
+              <AlbumSizeToggle
+                currentSize={albumImageSize}
+                handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
+              />
+
+              <AlbumsWrapper>
+                {sortUserAlbums(
+                  filterableAlbums,
+                  albumSortOrderBy,
+                  albumSortOrder
+                ).map(album => (
+                  <SingleAlbumContainer
+                    key={album.album.id}
+                    id={album.album.id}
+                    albumImageSize={albumImageSize}
+                  >
+                    <img
+                      src={album.album.images[1].url}
+                      width="300"
+                      height="300"
+                      alt={album.album.name}
+                    />
+                    <figcaption>{`(${album.album.popularity}) ${
+                      album.album.artists[0].name
+                    }: ${album.album.name}`}</figcaption>
+                  </SingleAlbumContainer>
+                ))}
+              </AlbumsWrapper>
+            </>
+          )}
+          {userIsLoggedIn &&
+            (!userAlbumsCount || userAlbums.length < userAlbumsCount) && (
+              <Spinner ref={this.intersectionTargetRef} />
+            )}
+        </StyledApp>
       </div>
     );
   }

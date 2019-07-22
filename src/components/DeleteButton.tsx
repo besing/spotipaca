@@ -2,13 +2,17 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-interface IDeleteButton {
+interface IDeleteButtonProps {
   label: string;
   onButtonClick: () => void;
   disabled: boolean;
 }
 
-const DeleteButton = ({ label, onButtonClick, disabled }: IDeleteButton) => (
+const DeleteButton = ({
+  label,
+  onButtonClick,
+  disabled
+}: IDeleteButtonProps) => (
   <Button
     variant="outlined"
     color="secondary"
