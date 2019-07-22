@@ -7,9 +7,10 @@ import { ISingleAlbumProps } from '../containers/SingleAlbumContainer';
 const StyledAlbumPlaceholder = styled.div<Partial<ISingleAlbumProps>>`
   width: ${props => (props.albumImageSize === 'large' ? '300px' : '150px')};
   height: ${props => (props.albumImageSize === 'large' ? '300px' : '150px')};
-  margin: 0 3px 3px 0;
+  margin: 0 5px 5px 0;
   background: rgba(0, 0, 0, 0.3);
   position: relative;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const StyledOverlay = styled.div`

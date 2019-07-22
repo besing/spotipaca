@@ -4,6 +4,9 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/styles';
+
+import { fontColorPrimary, spotifyGreen } from '../utils/constants';
 
 interface IAlbumSortMenuProps {
   sortOrderBy: 'added_at' | 'popularity';
@@ -16,6 +19,15 @@ const StyledAlbumSortMenu = styled.div`
   margin: 1em;
 `;
 
+const StyledSelect = withStyles({
+  root: {
+    color: fontColorPrimary
+  },
+  icon: {
+    color: spotifyGreen
+  }
+})(Select);
+
 const AlbumSortMenu = ({
   sortOrderBy,
   sortOrder,
@@ -23,18 +35,26 @@ const AlbumSortMenu = ({
   onSortOrderChange
 }: IAlbumSortMenuProps) => (
   <StyledAlbumSortMenu>
+    <span>Sort by</span>
     <FormControl>
-      <InputLabel shrink>Sort by</InputLabel>
-      <Select value={sortOrderBy} onChange={e => onOrderByChange(e)}>
+      <StyledSelect
+        value={sortOrderBy}
+        onChange={e => onOrderByChange(e)}
+        disableUnderline
+      >
         <MenuItem value="added_at">Most recent</MenuItem>
         <MenuItem value="popularity">Popularity</MenuItem>
-      </Select>
+      </StyledSelect>
     </FormControl>
     <FormControl>
-      <Select value={sortOrder} onChange={e => onSortOrderChange(e)}>
+      <StyledSelect
+        value={sortOrder}
+        onChange={e => onSortOrderChange(e)}
+        disableUnderline
+      >
         <MenuItem value="descending">Descending</MenuItem>
         <MenuItem value="ascending">Ascending</MenuItem>
-      </Select>
+      </StyledSelect>
     </FormControl>
   </StyledAlbumSortMenu>
 );

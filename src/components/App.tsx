@@ -16,6 +16,12 @@ import AlbumSizeToggle from './AlbumSizeToggle';
 import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
 import DeleteButton from './DeleteButton';
 import LoginPrompt from './LoginPrompt';
+import {
+  bgColorPrimary,
+  fontColorPrimary,
+  spotifyGreen
+} from '../utils/constants';
+import Title from './Title';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
@@ -26,7 +32,9 @@ interface IAppState {
 }
 
 const StyledApp = styled.div`
-  background: #333;
+  background: ${bgColorPrimary};
+  color: ${fontColorPrimary};
+  border-top: 20px solid ${spotifyGreen};
 `;
 
 class App extends React.Component<IAppProps, IAppState> {
@@ -135,6 +143,7 @@ class App extends React.Component<IAppProps, IAppState> {
     return (
       <div className="App">
         <StyledApp>
+          <Title />
           {!userIsLoggedIn && (
             <LoginPrompt onButtonClick={() => authenticate()} />
           )}
