@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Title /> renders the component 1`] = `
+.c0 {
+  font-family: 'Abril Fatface','Roboto',sans-serif;
+  color: #1db954;
+  font-weight: normal;
+  font-size: 50px;
+  text-align: center;
+  margin: 70px 20px;
+}
+
+<h1
+  class="c0"
+>
+  spotipaca
+</h1>
+`;
