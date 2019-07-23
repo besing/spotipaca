@@ -7,17 +7,17 @@ import {
   filterUsersFavorites,
   getAlbumI18n
 } from '../utils/userAlbums';
+import { COLORS } from '../utils/constants';
 import SingleAlbumContainer from '../containers/SingleAlbumContainer';
 import { IAppProps } from '../containers/AppContainer';
 import AlbumsWrapper from './AlbumsWrapper';
 import Spinner from './Spinner';
+import Title from './Title';
 import AlbumSortMenu from './AlbumSortMenu';
 import AlbumSizeToggle from './AlbumSizeToggle';
 import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
 import DeleteButton from './DeleteButton';
 import LoginPrompt from './LoginPrompt';
-import { COLORS } from '../utils/constants';
-import Title from './Title';
 
 interface IAppState {
   albumSortOrderBy: 'added_at' | 'popularity';
@@ -103,8 +103,7 @@ class App extends React.Component<IAppProps, IAppState> {
         this.intersectionObserver.observe(currentIntersectionElement);
     }
 
-    if (spinnerIsVisible && !isFetchingData && !userAlbums.length) {
-      // TODO: revert original state when finished
+    if (spinnerIsVisible && !isFetchingData) {
       fetchAlbums(25, userAlbums.length);
     }
   }
@@ -138,7 +137,6 @@ class App extends React.Component<IAppProps, IAppState> {
 
   render() {
     const {
-      fetchAlbums,
       userAlbums,
       userAlbumsCount,
       userIsLoggedIn,
@@ -211,6 +209,8 @@ class App extends React.Component<IAppProps, IAppState> {
                     key={album.album.id}
                     id={album.album.id}
                     albumImageSize={albumImageSize}
+                    albumName={album.album.name}
+                    albumArtist={album.album.artists[0].name}
                   >
                     <img
                       src={album.album.images[1].url}
@@ -218,9 +218,6 @@ class App extends React.Component<IAppProps, IAppState> {
                       height="300"
                       alt={album.album.name}
                     />
-                    <figcaption>{`(${album.album.popularity}) ${
-                      album.album.artists[0].name
-                    }: ${album.album.name}`}</figcaption>
                   </SingleAlbumContainer>
                 ))}
               </AlbumsWrapper>

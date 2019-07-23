@@ -35,9 +35,7 @@ const StyledMarkForDeletionButton = withStyles({
   }
 })(IndeterminateCheckBox);
 
-const StyledSingleAlbum = styled.figure<{
-  markedForDeletion: boolean;
-}>`
+const StyledSingleAlbum = styled.figure<{ markedForDeletion: boolean }>`
   margin: 0;
   font-size: 12px;
 
@@ -57,17 +55,22 @@ const StyledSingleAlbum = styled.figure<{
     filter: ${props => props.markedForDeletion && `grayscale()`};
   }
 
-  figcaption {
-    position: absolute;
-    z-index: 1;
-    bottom: 3px;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    width: 100%;
-  }
-
   ${StyledOverlay} {
     opacity: ${props => props.markedForDeletion && 1};
+  }
+`;
+
+const StyledCaption = styled.figcaption<Partial<ISingleAlbumProps>>`
+  position: absolute;
+  z-index: 1;
+  bottom: 5px;
+  padding: 5px 10px 5px 5px;
+  font-size: ${props => (props.albumImageSize === 'small' ? '12px' : '16px')};
+  background: #000;
+  color: #d0d0d0;
+
+  div:first-child {
+    margin-bottom: 4px;
   }
 `;
 
@@ -76,6 +79,8 @@ const SingleAlbum = ({
   markAlbumForDeletion,
   albumsMarkedForDeletion,
   albumImageSize,
+  albumName,
+  albumArtist,
   children
 }: ISingleAlbumProps) => {
   return (
@@ -84,6 +89,10 @@ const SingleAlbum = ({
         markedForDeletion={albumsMarkedForDeletion.includes(id)}
       >
         {children}
+        <StyledCaption albumImageSize={albumImageSize}>
+          <div>{albumArtist}</div>
+          <div>{albumName}</div>
+        </StyledCaption>
         <StyledOverlay onClick={() => markAlbumForDeletion(id)}>
           <StyledMarkForDeletionButton />
         </StyledOverlay>
