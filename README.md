@@ -1,44 +1,84 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Spotipaca 🦙
 
-## Available Scripts
+Are you constantly running into the notorious [Spotify 10k songs limit](https://community.spotify.com/t5/Live-Ideas/All-Platforms-Your-Library-Increase-maximum-Songs-allowed-in/idi-p/733759) (like me)?
 
-In the project directory, you can run:
+Do you just want to clean up your album library a bit, in a convenient way?
 
-### `npm start`
+**Spotipaca** gives you an overview over all your saved **Spotify** albums and lets you delete those which you don't appreciate that much any more, or the ones you maybe didn't _really_ want to save. 🤷
 
-Runs the app in the development mode.<br>
+My main motivation to build this was the aforementioned 10,000 songs limit Spotify still has (no matter if you're _Premium_) and frequently gives me a hard time skimming through my library and thinking about what I could delete in order to gain more space for new stuff.
+
+What's unique about **Spotipaca** is the **_Smart Filter_** that, once enabled, recommends you those of your albums that you could rather sacrifice for fresh ones.  
+This recommendation is based on Spotify's estimation on how much you're into the album (mostly based on _play counts of the album/tracks/artist_).  
+You can't access this info in the official Spotify apps.
+
+**Spotipaca** additionally lets you sort your albums ascending/descending by **recently added** (default) or **popularity**. The latter is less connected to your personal collection but more a ranking of all Spotify on which artists are _currently in vogue_.
+
+Unfortunately I didn't have the time yet to host this as a public tool for everyone yet(!), so you need to build it yourself (easy).  
+Beforehand, you'll need a [**Spotify Account**](https://developer.spotify.com/dashboard/) (free account works as well) and sign up for a **Client ID** (personal API key).
+
+---
+
+## Installation
+
+Clone this repository and install the dependencies:
+
+```sh
+yarn
+```
+
+After you've hopefully signed up for a Spotify API key (_"Client ID"_), you need to manually create a **.env** file in the root project directory and add the following line:
+
+```sh
+REACT_APP_SPOTIFY_CLIENT_ID=********************************
+
+# (the ***'s are your ID!)
+```
+
+Then run the app in dev mode:
+
+```sh
+yarn start
+
+# running tests
+yarn test
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), and all the core environment, tools and workflows were untouched.
 
-### `npm test`
+![Screenshot of the app](https://besing.grus.uberspace.de/image_hosting/spotipaca_screenshot.png)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## TODO
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This is highly considered alpha software and I'll continuously improve things on it.  
+The goal is to have a hosted public version that every Spotify user can access without the need for dev tools or an API key.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Of course I'm very happy about contributors to this project!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+My current upcoming plans / TODOs:
 
-### `npm run eject`
+### Code
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [ ] Add tests
+- [ ] Save app data in LocalStorage instead of just state? (quicker reload...?)
+- [ ] Clean up component structure a bit more (?)
+- [ ] Replace _Material UI_ by something simpler & with better performance (custom UI elements or other library)
+- [ ] Make sure (Webpack) tree shaking works as expected
+  - [ ] especially _Material UI_ module imports will need to be refactored
+- [ ] a11y
+- [ ] Replace TSlint (soon to be deprecated) by ESlint
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### App features
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [ ] Show (amount of) tracks of each album
+  - [ ] show emptied up space after deletion
+- [ ] Search Functionality (by Album Name...)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Design
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [ ] App logo
+- [ ] Favicon
