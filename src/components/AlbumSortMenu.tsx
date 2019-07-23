@@ -17,16 +17,24 @@ interface IAlbumSortMenuProps {
 
 const StyledAlbumSortMenu = styled.div`
   display: flex;
+  margin-bottom: 8px;
+
+  @media (min-width: 400px) {
+    margin-right: 20px;
+  }
 `;
 
 const StyledLabel = styled.span`
-  padding-top: 6px; /* using the Material UI FormControl CSS value to align vertically */
   margin-right: 12px;
+  flex-shrink: 0;
+  opacity: 0.5;
 `;
 
 const StyledFormControl = withStyles({
   root: {
-    marginRight: '10px'
+    marginRight: '10px',
+    position: 'relative',
+    top: '-6px'
   }
 })(FormControl);
 

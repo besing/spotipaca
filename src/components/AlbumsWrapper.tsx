@@ -4,7 +4,11 @@ import styled from 'styled-components';
 const StyledAlbumsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 1em;
+  justify-content: center;
+
+  @media (min-width: 690px) {
+    margin-top: 20px;
+  }
 `;
 
 const AlbumsWrapper: React.FunctionComponent = ({ children }) => (

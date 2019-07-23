@@ -17,6 +17,8 @@ interface IAlbumSizeToggleProps {
 }
 
 const StyleOverwriteWrapper = styled.div`
+  margin-right: 30px;
+
   .MuiToggleButton-root.Mui-selected {
     background: ${COLORS.spotifyGreen};
   }
@@ -43,6 +45,7 @@ const AlbumSizeToggle = ({
       value={currentSize}
       onChange={(e, value) => handleAlbumSizeToggleChange(e, value)}
       exclusive
+      size="small"
     >
       <StyledToggleButton
         value="small"

@@ -29,9 +29,33 @@ interface IAppState {
 
 const StyledApp = styled.div`
   min-height: 100vh;
+  padding: 0 10px;
   background: ${COLORS.bgColorPrimary};
   color: ${COLORS.fontColorPrimary};
   border-top: 20px solid ${COLORS.spotifyGreen};
+
+  @media (min-width: 550px) {
+    padding: 0 40px;
+  }
+
+  @media (min-width: 1100px) {
+    padding: 0 60px;
+  }
+`;
+
+const StyledToolbarTop = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const StyledToolbarBottom = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  & > * {
+    margin-bottom: 25px;
+  }
 `;
 
 class App extends React.Component<IAppProps, IAppState> {
@@ -137,9 +161,9 @@ class App extends React.Component<IAppProps, IAppState> {
       favoritesFilterIsActive
     );
 
-    const deleteButtonLabel = `Delete selected ${
+    const deleteButtonLabel = `Delete ${
       albumsMarkedForDeletion.length > 1 ? albumsMarkedForDeletion.length : ''
-    } ${getAlbumI18n(albumsMarkedForDeletion)}`;
+    } selected ${getAlbumI18n(albumsMarkedForDeletion)}`;
 
     return (
       <div className="App">
@@ -150,32 +174,33 @@ class App extends React.Component<IAppProps, IAppState> {
           )}
           {!!userAlbums.length && (
             <>
-              <AlbumSortMenu
-                sortOrderBy={albumSortOrderBy}
-                sortOrder={albumSortOrder}
-                onOrderByChange={this.handleSortOrderByChange}
-                onSortOrderChange={this.handleSortOrderChange}
-              />
+              <StyledToolbarTop>
+                <>
+                  <AlbumSortMenu
+                    sortOrderBy={albumSortOrderBy}
+                    sortOrder={albumSortOrder}
+                    onOrderByChange={this.handleSortOrderByChange}
+                    onSortOrderChange={this.handleSortOrderChange}
+                  />
+                  <FavoritesFilterCheckbox
+                    filterActive={favoritesFilterIsActive}
+                    label="Smart Filter"
+                    handleFavoritesFilterChange={this.handleFavoritesFilter}
+                  />
+                </>
+              </StyledToolbarTop>
 
-              <FavoritesFilterCheckbox
-                filterActive={favoritesFilterIsActive}
-                label="Smart Filter"
-                handleFavoritesFilterChange={this.handleFavoritesFilter}
-              />
-
-              <div>
+              <StyledToolbarBottom>
+                <AlbumSizeToggle
+                  currentSize={albumImageSize}
+                  handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
+                />
                 <DeleteButton
                   onButtonClick={() => deleteAlbums(albumsMarkedForDeletion)}
                   label={deleteButtonLabel}
                   disabled={!albumsMarkedForDeletion.length}
                 />
-              </div>
-
-              <AlbumSizeToggle
-                currentSize={albumImageSize}
-                handleAlbumSizeToggleChange={this.handleAlbumSizeToggle}
-              />
-
+              </StyledToolbarBottom>
               <AlbumsWrapper>
                 {sortUserAlbums(
                   filterableAlbums,
