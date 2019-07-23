@@ -6,6 +6,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { withStyles } from '@material-ui/styles';
 
+import { COLORS } from '../utils/constants';
+
 interface IAlbumSizeToggleProps {
   currentSize: 'large' | 'small';
   handleAlbumSizeToggleChange: (
@@ -16,19 +18,19 @@ interface IAlbumSizeToggleProps {
 
 const StyleOverwriteWrapper = styled.div`
   .MuiToggleButton-root.Mui-selected {
-    background: red;
+    background: ${COLORS.spotifyGreen};
+  }
+  .MuiToggleButton-root:hover {
+    background: rgba(${COLORS.spotifyGreenRgb}, 0.6);
   }
 `;
 
 const StyledToggleButton = withStyles({
   root: {
-    background: 'green'
+    background: `rgba(${COLORS.spotifyGreenRgb}, 0.5)`
   },
-  selected: {
-    background: 'blue'
-  },
-  disabled: {
-    background: 'blue'
+  label: {
+    color: COLORS.bgColorPrimary
   }
 })(ToggleButton);
 

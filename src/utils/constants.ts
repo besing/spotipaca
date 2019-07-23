@@ -1,3 +1,8 @@
-export const bgColorPrimary = '#333';
-export const fontColorPrimary = '#d4d4d4';
-export const spotifyGreen = '#1db954';
+export const COLORS = {
+  error: '#e23939',
+  errorDarker: '#cc2c2c',
+  bgColorPrimary: '#333',
+  fontColorPrimary: '#d4d4d4',
+  spotifyGreen: '#1db954',
+  spotifyGreenRgb: '29,185,84'
+};

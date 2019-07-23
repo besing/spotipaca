@@ -3,7 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/styles';
 
-import { spotifyGreen } from '../utils/constants';
+import { COLORS } from '../utils/constants';
 
 interface IFavoritesFilterCheckboxProps {
   filterActive: boolean;
@@ -11,12 +11,18 @@ interface IFavoritesFilterCheckboxProps {
   handleFavoritesFilterChange: () => void;
 }
 
+const StyledFormControlLabel = withStyles({
+  label: {
+    fontWeight: 'bold'
+  }
+})(FormControlLabel);
+
 const StyledCheckbox = withStyles({
   root: {
-    color: spotifyGreen
+    color: COLORS.spotifyGreen
   },
   checked: {
-    color: spotifyGreen
+    color: COLORS.spotifyGreen
   }
 })(Checkbox);
 
@@ -25,7 +31,7 @@ const FavoritesFilterCheckbox = ({
   label,
   handleFavoritesFilterChange
 }: IFavoritesFilterCheckboxProps) => (
-  <FormControlLabel
+  <StyledFormControlLabel
     control={
       <StyledCheckbox
         color="default"

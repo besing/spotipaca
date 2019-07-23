@@ -10,7 +10,7 @@ const StyledLoginPrompt = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20vh 5vw;
+  margin: 80px 0;
   text-align: center;
   color: #d4d4d4;
 
@@ -18,8 +18,6 @@ const StyledLoginPrompt = styled.div`
     font-size: 1.5em;
   }
 `;
-
-// TODO: Add Logo
 
 const LoginPrompt = ({ onButtonClick }: ILoginPromptProps) => (
   <StyledLoginPrompt>

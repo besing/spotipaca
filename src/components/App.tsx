@@ -16,11 +16,7 @@ import AlbumSizeToggle from './AlbumSizeToggle';
 import FavoritesFilterCheckbox from './FavoritesFilterCheckbox';
 import DeleteButton from './DeleteButton';
 import LoginPrompt from './LoginPrompt';
-import {
-  bgColorPrimary,
-  fontColorPrimary,
-  spotifyGreen
-} from '../utils/constants';
+import { COLORS } from '../utils/constants';
 import Title from './Title';
 
 interface IAppState {
@@ -32,9 +28,10 @@ interface IAppState {
 }
 
 const StyledApp = styled.div`
-  background: ${bgColorPrimary};
-  color: ${fontColorPrimary};
-  border-top: 20px solid ${spotifyGreen};
+  min-height: 100vh;
+  background: ${COLORS.bgColorPrimary};
+  color: ${COLORS.fontColorPrimary};
+  border-top: 20px solid ${COLORS.spotifyGreen};
 `;
 
 class App extends React.Component<IAppProps, IAppState> {
@@ -140,6 +137,10 @@ class App extends React.Component<IAppProps, IAppState> {
       favoritesFilterIsActive
     );
 
+    const deleteButtonLabel = `Delete selected ${
+      albumsMarkedForDeletion.length > 1 ? albumsMarkedForDeletion.length : ''
+    } ${getAlbumI18n(albumsMarkedForDeletion)}`;
+
     return (
       <div className="App">
         <StyledApp>
@@ -163,16 +164,9 @@ class App extends React.Component<IAppProps, IAppState> {
               />
 
               <div>
-                {albumsMarkedForDeletion.length}{' '}
-                {getAlbumI18n(albumsMarkedForDeletion)} marked for deletion
-              </div>
-
-              <div>
                 <DeleteButton
                   onButtonClick={() => deleteAlbums(albumsMarkedForDeletion)}
-                  label={`Delete selected ${getAlbumI18n(
-                    albumsMarkedForDeletion
-                  )}`}
+                  label={deleteButtonLabel}
                   disabled={!albumsMarkedForDeletion.length}
                 />
               </div>
