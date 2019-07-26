@@ -6,7 +6,7 @@ const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const redirectUrl = 'http://localhost:3000/redirect';
 const userScope = 'user-library-read user-library-modify user-top-read';
 
-const generateRandomString = (length: number) => {
+export const generateRandomString = (length: number) => {
   let text = '';
   const possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -36,7 +36,7 @@ export const setAuthTokenForRequests = () => {
 
   if (typeof access_token === 'string') {
     spotifyApi.setAccessToken(access_token);
-    // console.log('spotifyApi.setAccessToken(access_token);');
+    return access_token;
   }
 };
 
