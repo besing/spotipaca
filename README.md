@@ -63,7 +63,7 @@ My current upcoming plans / TODOs:
 
 ### Code
 
-- [ ] Add tests
+- [x] WIP: Add tests
 - [ ] Save app data in LocalStorage instead of just state? (quicker reload...?)
 - [ ] Clean up component structure a bit more (?)
 - [ ] Replace _Material UI_ by something simpler & with better performance (custom UI elements or other library)

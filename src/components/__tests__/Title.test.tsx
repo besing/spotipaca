@@ -8,8 +8,8 @@ import Title from '../Title';
 afterEach(cleanup);
 
 describe('<Title />', () => {
-  it('renders the component', () => {
-    const { container } = render(<Title />);
-    expect(container.firstChild).toMatchSnapshot();
+  it('displays the (correct) title', () => {
+    const { getByText } = render(<Title />);
+    expect(getByText('spotipaca')).toBeVisible();
   });
 });
