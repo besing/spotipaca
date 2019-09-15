@@ -3,8 +3,10 @@ import queryString from 'query-string';
 
 const authUrl = 'https://accounts.spotify.com/authorize';
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-// const redirectUrl = 'http://localhost:3000/redirect';
-const redirectUrl = 'https://spotipaca.netlify.com';
+const devRedirectUrl = 'http://localhost:3000';
+const redirectUrl = process.env.REACT_APP_REDIRECT_URL
+  ? process.env.REACT_APP_REDIRECT_URL
+  : devRedirectUrl;
 const userScope = 'user-library-read user-library-modify user-top-read';
 
 export const generateRandomString = (length: number) => {
