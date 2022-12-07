@@ -48,7 +48,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), and all the core environment, tools and workflows were untouched.
 
-![Screenshot of the app](https://besing.grus.uberspace.de/image_hosting/spotipaca_screenshot.png)
+![Screenshot of the app](https://besing.uber.space/image_hosting/spotipaca_screenshot.png)
 
 ---
 
@@ -71,6 +71,8 @@ My current upcoming plans / TODOs:
   - [ ] especially _Material UI_ module imports will need to be refactored
 - [ ] a11y
 - [ ] Replace TSlint (soon to be deprecated) by ESlint
+- [ ] Hide API client_id from bundle (currently included through env settings)
+- [ ] Register www.spotipaca.com domain
 
 ### App features
 
